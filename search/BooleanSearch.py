@@ -20,7 +20,7 @@ class BooleanSearch:
         stack_value = []
         for idx, item in enumerate(modified_expression):
             if item in ['NOT', 'AND', 'OR']:
-                n2 = stack_value.pop()  # 注意，先出栈的在操作符右边.
+                n2 = stack_value.pop()
                 n1 = stack_value.pop()
                 result = n1
                 if item == 'NOT':

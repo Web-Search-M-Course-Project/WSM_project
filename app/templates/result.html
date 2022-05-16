@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <!-- search name -->
+        <title> Result for {{searchText}} </title>  
+        <style>
+            h3{
+                color:black;
+                text-align: left;
+            }
+            body{
+                color:darkgrey;
+                text-align: left;
+            }
+            li{
+                display: inline;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <h1>result</h1>
+            <!-- <p>Covid-19 Search</p> -->
+        </div>
+
+        <div>
+            {%for res in results%}
+            <h3>{{res['title']}}</h3> 
+
+            <!-- <p>{{res.authors|join(',')}}</p> -->
+
+            <!-- <ul>
+                {%for author in res['authors']%} 
+
+                    {% for name, show in author.items()%}
+                        {%if show%}
+                        <li> {{name}}   </li>
+                        {%endif%}
+                    {% else %}
+                        <li><em>no users found</em></li>
+                    {% endfor %}
+                {% endfor %}
+            </ul> -->
+
+            <ul>
+                {% for author in res['authors'] %} 
+                    <li>{{author|selectattr(author.show) }}</li>
+                {% endfor %}
+            </ul>
+
+            <p>{{res['abstract']}}</p>
+            {%endfor%}
+        </div>
+
+    </body>
+</html>

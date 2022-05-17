@@ -34,7 +34,7 @@ from tqdm import tqdm
 #         json_str = json.dump(all_data, f, indent=4, ensure_ascii=False)
 
 meta_data = {}
-with open('data.json', "r", encoding="utf-8") as f:
+with open('./data/data.json', "r", encoding="utf-8") as f:
     all_data = json.load(f)
     for paper in all_data:
         paper_id = paper['paper_id']
@@ -45,5 +45,5 @@ with open('data.json', "r", encoding="utf-8") as f:
             abstract = []
         meta_data[paper_id] = {'title': title, 'abstract': abstract}
 
-with open('meta_data.json', "w", encoding="utf-8") as f:
+with open('./data/meta_data.json', "w", encoding="utf-8") as f:
     json.dump(meta_data, f, indent=4, ensure_ascii=False)

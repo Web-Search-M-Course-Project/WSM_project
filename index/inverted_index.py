@@ -2,9 +2,10 @@ import json
 from utlis import preprocess
 
 def construct_inverted_index(fussy_method=None):
-    with open('../data.json', encoding='utf-8') as f:
+    # print("nothing OK")
+    with open('./data/data.json', encoding='utf-8') as f:
         all_data = json.load(f)
-
+    # print("Open OK")
     inverted_index_map = {}
     for paper in all_data:
         paper_id = paper['paper_id']
@@ -14,7 +15,7 @@ def construct_inverted_index(fussy_method=None):
         else:
             abstract = []
         tokens = title + abstract
-        print(tokens)
+        # print(tokens)
         for token in tokens:
             if token in inverted_index_map.keys():
                 posting_list = inverted_index_map[token]
@@ -25,8 +26,8 @@ def construct_inverted_index(fussy_method=None):
             else:
                 inverted_index_map[token] = {paper_id: 1}
     # print(inverted_index_map)
-
-    with open(f'inverted_index_{fussy_method}.json', 'w', encoding='utf-8') as f:
+    # print("OK")
+    with open(f'./data/inverted_index_{fussy_method}.json', 'w', encoding='utf-8') as f:
         json.dump(inverted_index_map, f,  indent=4, ensure_ascii=False)
 
 if __name__ == '__main__':

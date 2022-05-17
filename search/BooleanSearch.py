@@ -3,9 +3,9 @@ from utlis import preprocess, middle_to_after, st
 
 class BooleanSearch:
     def __init__(self):
-        with open('../index/inverted_index.json', 'r', encoding='utf-8') as f:
+        with open('./data/inverted_index.json', 'r', encoding='utf-8') as f:
             self.posting_lists = json.load(f)
-        with open('../meta_data.json', 'r', encoding='utf-8') as f:
+        with open('./data/meta_data.json', 'r', encoding='utf-8') as f:
             self.meta_data = json.load(f)
 
     def search(self, query):

@@ -6,9 +6,9 @@ class FussySearch:
     def __init__(self, fussy_method='stem'):
         assert fussy_method in ['stem', 'lemmatize']
         self.fussy_method = fussy_method
-        with open(f'../index/inverted_index_{fussy_method}.json', 'r', encoding='utf-8') as f:
+        with open(f'./data/inverted_index_{fussy_method}.json', 'r', encoding='utf-8') as f:
             self.posting_lists = json.load(f)
-        with open('../meta_data.json', 'r', encoding='utf-8') as f:
+        with open('./data/meta_data.json', 'r', encoding='utf-8') as f:
             self.meta_data = json.load(f)
 
     def search(self, query):

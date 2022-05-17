@@ -3,6 +3,30 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 import re
 from textblob import Word
+import pickle
+import json
+import os
+
+def picklize():
+    _dir = os.listdir("data")
+    for dd in _dir:
+        if not os.path.isfile(os.path.join("data",dd.split(".")[0]+".pkl")):
+            print("G: ", os.path.join("data",dd.split(".")[0]+".pkl"))
+            jsonfile = open(os.path.join("data",dd), "r", encoding='utf-8')
+            pklfile = open(os.path.join("data",dd.split(".")[0]+".pkl"), "wb")
+            all_data = json.load(jsonfile)
+            pickle.dump(all_data, pklfile)
+            pklfile.close()
+        if not os.path.isfile(os.path.join("data",dd.split(".")[0]+".json")):
+            print("G: ", os.path.join("data",dd.split(".")[0]+".json"))
+            jsonfile = open(os.path.join("data",dd.split(".")[0]+".json"), "w", encoding='utf-8')
+            pklfile = open(os.path.join("data",dd), "rb")
+            all_data = pickle.load(pklfile)
+            json.dump(all_data, jsonfile, indent = 4)
+            jsonfile.close()
+            
+            # with open('./data/data.json', "r", encoding="utf-8") as f:
+            #     all_data = json.load(f)
 
 st = PorterStemmer()
 

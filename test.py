@@ -1,9 +1,9 @@
 import citation
 import dataclass
 import utlis
-data = dataclass.dataclass()
+data = dataclass.dataclass("stem")
 print(data.id_to_title("daf32e013d325a6feb80e83d15aabc64a48fae33"))
-title = dataclass.str_to_tuple("Spatial epidemiology of networked metapopulation: An overview")
+title = dataclass.str_to_tuple("Spatial epidemiology of networked metapopulation: An overview","stem")
 print(title)
 print(data.title_to_id(title))
 num_with_citation = 0

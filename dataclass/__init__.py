@@ -10,7 +10,7 @@ def str_to_tuple(title_str: str, fussy_method:str = None, ) ->tuple:
     return title
 
 class dataclass:
-    def __init__(self, fussy_method=None) -> None:
+    def __init__(self, fussy_method="stem") -> None:
         """
         Dataset
         """
@@ -19,7 +19,14 @@ class dataclass:
             data = pickle.load(f)
             f.close()
         self.data = data
+        fussy_alias = "none"
+        if fussy_method is not None:
+            fussy_alias = fussy_method
+        with open("data/inverted_index_"+fussy_alias+".pkl","rb") as f:
+            inverted_index = pickle.load(f)
+        # print(inverted_index)
         
+                
         self.d_title_to_paperid = {}
         """title: tuple -> paperid: str
         """

@@ -16,7 +16,7 @@ def search_engine():
 
 @app.route('/result/', methods=['GET'])
 def do_search():
-    per_page_num, total = 3, 100
+    per_page_num, total = 5, 30
     key = request.args['searchText']
     results_all = get_result(search_text=key, num=total)
 
@@ -27,9 +27,6 @@ def do_search():
         items=slice_result(results_all, page, per_page_num))
 
     return render_template('result.html', searchText=key, paginate=current_page)
-
-
-
 
 if __name__ == "__main__":
     app.run(debug=True, port=3333)

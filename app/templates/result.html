@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <!-- search name -->
+        <title>Result</title>  
+        <style>
+            html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+            li {display: inline;}
+        </style>
+    </head>
+
+    <body class="w3-light">
+    <div class="w3-content" style="max-width:1400px">
+
+        <!-- Header -->
+        <div class="w3-container w3-center w3-padding-hor-32"> 
+            <h1><b>Result for {{searchText}}</b></h1>
+        </div>
+
+        <!-- show results -->
+        <div class="w3-row">
+            <div class="w3-col l8 s12">
+            {%for res in paginate.items%}
+                <!-- article result -->
+                <div class="w3-card-4 w3-margin w3-white">
+                    <!--title and author-->
+                    <div class="w3-container w3-padding-hor-8">
+                        <h3><b>{{res['title']}}</b></h3>
+                        <h5>
+                            <ul>
+                                {% for author in res['authors'] if author.show %}
+                                <li>{{author.name}}</li>
+                                {%endfor%}
+                            </ul>
+                        </h5>
+                    </div>
+                    <!--abstract-->
+                    <div class="w3-container">
+                        <p>{{res['abstract']}}</p>
+                        <div class="w3-row">
+                        <div class="w3-col m8 s12">
+                            <p><button class="w3-btn w3-padding-large w3-white w3-border w3-hover-border-black"><b>READ MORE »</b></button></p>
+                        </div>
+                        <div class="w3-col m4 w3-hide-small">
+                            <p><span class="w3-padding-large w3-right"><b>Comments  </b> <span class="w3-tag">0</span></span></p>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            {%endfor%}
+            </div>
+        </div>  
+
+        <nav>
+            <ul class="pagination">
+                <!--Page for previous-->
+                {% if paginate.has_prev %}
+                <li class="page-item active"><a class="page-link" href="{{url_for('do_search',searchText=searchText, page=paginate.page-1)}}">Previous</a> </li>
+                {%else%}
+                <li class="page-item disabled"><a class="page-link" href="#"> No Previous </a> </li>
+                {%endif%}
+
+                <!--page for iteration-->
+                {% for page in paginate.iter_pages(1,1,3,1)%}
+                {% if page %}
+                    <li class="page-item {% if page==paginate.page %}active{%endif%}">
+                        <a class="page-link" href="{{url_for('do_search', searchText=searchText, page=page)}}">{{page}}</a>
+                    </li>
+                {%else%}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">&hellip;</a>
+                    </li>
+                {%endif%}
+                {%endfor%}
+
+                <!--page for next-->
+                {% if paginate.has_next %}
+                <li class="page-item active"><a class="page-link" href="{{url_for('do_search',searchText=searchText, page=paginate.page+1)}}"> Next </a> </li>
+                {%else%}
+                <li class="page-item disabled"><a class="page-link" href="#"> No Next </a> </li>
+                {%endif%}
+
+            </ul>
+        </nav>
+    </div>
+    
+    </body>
+</html>

@@ -1,19 +1,23 @@
 import json
+import sys
+from turtle import pos
+sys.path.append("..")
 from utlis import preprocess, middle_to_after, st
+import pandas as pd
+import pickle
+import re
 
 class BooleanSearch:
     def __init__(self):
-        with open('./data/inverted_index.json', 'r', encoding='utf-8') as f:
-            self.posting_lists = json.load(f)
-        with open('./data/meta_data.json', 'r', encoding='utf-8') as f:
-            self.meta_data = json.load(f)
+        with open('../data/position_index_none.pkl', 'rb') as f:
+            self.posting_lists = pickle.load(f)
+        self.metadata = pd.read_csv("../2020-04-03/metadata_with_mag_mapping_04_03.csv", encoding="utf-8")
 
     def search(self, query):
         expression = middle_to_after(query)
         modified_expression = []
         for item in expression:
             if item not in ['NOT', 'AND', 'OR']:
-                item = st.stem(item)
                 item = set(self.posting_lists[item].keys())
             modified_expression.append(item)
 
@@ -33,9 +37,20 @@ class BooleanSearch:
             else:
                 stack_value.append(item)  # 词语直接压栈
         result = list(stack_value[0])
+        print(result)
         for i in range(len(result)):
             uid = result[i]
-            result[i] = self.meta_data[uid]
+            positions = []
+            for item in expression:
+                if item not in ['NOT', 'AND', 'OR']:
+                    try:
+                        positions += self.posting_lists[item][uid] 
+                    except:  # NOT xxx / OR xxx
+                        # print('cannot find', item)
+                        pass
+            paper = self.metadata[self.metadata.cord_uid == uid].to_dict('records')[0]
+            result[i] = {'cord_uid':uid, 'title': paper['title'], 
+                        'authors': paper['authors'], 'abstract': paper['abstract'], 'positions': positions}
             print(result[i])
 
         return result

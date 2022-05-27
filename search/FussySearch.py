@@ -1,18 +1,22 @@
 import json
+import sys
+sys.path.append("..")
 from utlis import preprocess, middle_to_after, st
 from textblob import Word
+import pickle
+import pandas as pd
 
 class FussySearch:
     def __init__(self, fussy_method='stem'):
         assert fussy_method in ['stem', 'lemmatize']
         self.fussy_method = fussy_method
-        with open(f'./data/inverted_index_{fussy_method}.json', 'r', encoding='utf-8') as f:
-            self.posting_lists = json.load(f)
-        with open('./data/meta_data.json', 'r', encoding='utf-8') as f:
-            self.meta_data = json.load(f)
+        with open(f'../data/position_index_{fussy_method}.pkl', 'rb') as f:
+            self.posting_lists = pickle.load(f)
+        self.metadata = pd.read_csv("../2020-04-03/metadata_with_mag_mapping_04_03.csv", encoding="utf-8")
 
     def search(self, query):
         expression = middle_to_after(query)
+        fussy_expression = []
         modified_expression = []
         for item in expression:
             if item not in ['NOT', 'AND', 'OR']:
@@ -21,6 +25,7 @@ class FussySearch:
                 elif self.fussy_method == 'lemmatize':
                     item = Word(item).lemmatize()
                     item = Word(item).lemmatize('v')
+                fussy_expression.append(item)
                 item = set(self.posting_lists[item].keys())
             modified_expression.append(item)
 
@@ -39,11 +44,22 @@ class FussySearch:
                 stack_value.append(result)
             else:
                 stack_value.append(item)  # 词语直接压栈
-        result = list(stack_value[0])
+        result = list(stack_value[0])        
+        # print(result)
         for i in range(len(result)):
             uid = result[i]
-            result[i] = self.meta_data[uid]
+            positions = []
+            for item in fussy_expression:
+                try:
+                    positions += self.posting_lists[item][uid] 
+                except:  # NOT xxx / OR xxx
+                    # print('cannot find', item)
+                    pass
+            paper = self.metadata[self.metadata.cord_uid == uid].to_dict('records')[0]
+            result[i] = {'cord_uid':uid, 'title': paper['title'], 
+                        'authors': paper['authors'], 'abstract': paper['abstract'], 'positions': positions}
             print(result[i])
+
 
         return result
 

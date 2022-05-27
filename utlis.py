@@ -34,16 +34,19 @@ english_stopwords = stopwords.words('english')
 english_punctuations = "[,.:+-/;?()&!*@#$%\'\"]"
 
 def preprocess(text, fussy_method=None):
-    text = re.sub(english_punctuations, "", text)
-    text = re.sub("[0-9]", "", text)
-    tokens = tokenize.word_tokenize(text)
-    filtered_tokens = [word for word in tokens if word not in english_stopwords]
-    processed_text = filtered_tokens
-    if fussy_method == 'stem':
-        processed_text = [st.stem(word) for word in processed_text]
-    elif fussy_method == 'lemmatize':
-        processed_text = [Word(word).lemmatize() for word in processed_text]
-        processed_text = [Word(word).lemmatize('v') for word in processed_text]
+    try:
+        text = re.sub(english_punctuations, "", text)
+        text = re.sub("[0-9]", "", text)
+        tokens = tokenize.word_tokenize(text)
+        filtered_tokens = [word for word in tokens if word not in english_stopwords]
+        processed_text = filtered_tokens
+        if fussy_method == 'stem':
+            processed_text = [st.stem(word) for word in processed_text]
+        elif fussy_method == 'lemmatize':
+            processed_text = [Word(word).lemmatize() for word in processed_text]
+            processed_text = [Word(word).lemmatize('v') for word in processed_text]
+    except:
+        processed_text = []
 
     return processed_text
 

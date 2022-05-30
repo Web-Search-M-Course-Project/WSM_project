@@ -1,4 +1,5 @@
+__pycache__
+*.pyc
+data/*.json
+data/*.pkl
 2020-04-03
-app-wiki
-wsm
-csy

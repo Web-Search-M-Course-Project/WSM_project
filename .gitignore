@@ -1,5 +1,3 @@
 __pycache__
-*.pyc
-data/*.json
-data/*.pkl
+data
 2020-04-03

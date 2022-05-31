@@ -1,10 +1,18 @@
-import math
+import math, os, sys, json
 from flask import Flask, render_template, request
 from flask_sqlalchemy import Pagination
 from controller import get_result, slice_result
 
+cur_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(cur_dir, ".."))
+# from utils import preprocess, middle_to_after, st
+from search.FussySearch import FussySearch
 
 app = Flask(__name__)
+fussy_search = FussySearch(fussy_method='stem')
+file_path = './data/meta_data.json'
+with open(file_path, 'r', encoding='utf-8') as f:
+    meta_data = json.load(f)
 
 @app.route('/')
 def main_index():
@@ -18,7 +26,10 @@ def search_engine():
 def do_search():
     per_page_num, total = 5, 30
     key = request.args['searchText']
-    results_all = get_result(search_text=key, num=total)
+
+    results_all = fussy_search.search(key)
+
+    # results_all = get_result(search_text=key, search=fussy_search, meta_data=meta_data, num=5)
 
     page = request.args.get('page', default=1, type=int)
     

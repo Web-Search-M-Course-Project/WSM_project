@@ -1,14 +1,18 @@
 import json
 import sys
-sys.path.append("..")
-from utlis import preprocess
+import os
+
 import pandas as pd
 import pickle
 from tqdm import tqdm
 import re
 
+cur_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(cur_dir, ".."))
+from utils import preprocess
+
 def construct_position_index_from_metadata(fussy_method=None):
-    metadata = pd.read_csv("../2020-04-03/metadata_with_mag_mapping_04_03.csv", encoding="utf-8")
+    metadata = pd.read_csv("./2020-04-03/metadata.csv", encoding="utf-8")
     # print("Open OK")
     position_index_map = {}
     for idx, paper in tqdm(metadata.iterrows()):
@@ -29,7 +33,7 @@ def construct_position_index_from_metadata(fussy_method=None):
                 position_index_map[token] = {cord_uid: [idx]}
     # print(inverted_index_map)
     # print("OK")
-    with open(f'../data/position_index_{fussy_method}.pkl', 'wb') as f:
+    with open(f'./data/position_index_{fussy_method}.pkl', 'wb') as f:
         pickle.dump(position_index_map, f)
 
 def find_pos(text, expression):
@@ -42,6 +46,6 @@ def find_pos(text, expression):
 
 
 if __name__ == '__main__':
-    # construct_position_index_from_metadata(fussy_method='none')
-    # construct_position_index_from_metadata(fussy_method='stem')
+    construct_position_index_from_metadata(fussy_method=None)
+    construct_position_index_from_metadata(fussy_method='stem')
     construct_position_index_from_metadata(fussy_method='lemmatize')

@@ -7,11 +7,24 @@ from textblob import Word
 st = PorterStemmer()
 
 english_stopwords = stopwords.words('english')
-english_punctuations = "[,.:+-/;?()&!*@#$%\'\"]"
+english_punctuations = """[,.:+-/;?()&!*@#$%'"]"""
 
+
+# def preprocess(text, fussy_method=None, title=True):
 def preprocess(text, fussy_method=None):
-    text = re.sub(english_punctuations, "", text)
-    text = re.sub("[0-9]", "", text)
+    # print('--------------------')
+    # print(type(text))
+    if not isinstance(text, str):
+        # if title:
+        #     print(type(text))
+        #     print(text)
+        return []
+    # print('====================================')
+
+    text = re.sub(english_punctuations, " ", text)
+    # print('3333333333333333333333')
+    text = re.sub("[0-9]", " ", text)
+    text = re.sub('[^a-zA-Z]', ' ', text).lower()
     tokens = tokenize.word_tokenize(text)
     filtered_tokens = [word for word in tokens if word not in english_stopwords]
     processed_text = filtered_tokens

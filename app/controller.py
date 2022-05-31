@@ -1,15 +1,22 @@
 import json
 import os
+import sys
 import math
 from tqdm import tqdm
 from Data_process import Author, list_author
 import random
 
-dir = '2020-04-03/comm_use_subset/pdf_json'
+cur_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(cur_dir, ".."))
+# from utils import preprocess, middle_to_after, st
+from search.FussySearch import FussySearch
+
+# dir = '2020-04-03/comm_use_subset/pdf_json'
 # file = './2020-04-03/comm_use_subset/pdf_json/0a00a6df208e068e7aa369fb94641434ea0e6070.json'
 
 
-def get_result(search_text, num=5):
+def get_result(search_text, search, meta_data, num=5):
+    result = search.query(search_text)
     dir = '2020-04-03/comm_use_subset/pdf_json'
     files = os.listdir(dir)
     all_files = random.choices(files, k=num)
@@ -17,12 +24,21 @@ def get_result(search_text, num=5):
     results = parse_result(all_files)
     return results
 
+# def parse_result_from_result(results, meta_data):
+#             # result = {'authors': authors, 'title': title, 'abstract': abstract}
+#     for uid in results:
+#         data = meta_data[uid]
+#         paper = {}
+#         paper['authors'] = list_author(data['authors'])
+#         paper['title'] = 
+
+
 def slice_result(results, page_num, per_page_num):
     if page_num < 1 or page_num > math.ceil(len(results) /per_page_num):
         page_num = 1
     start, end = (page_num - 1)*per_page_num, page_num*per_page_num
     return results[start:end]
-    
+
 
 def parse_result(files):
     results = []

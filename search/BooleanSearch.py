@@ -1,17 +1,19 @@
 import json
 import sys
-from turtle import pos
-sys.path.append("..")
-from utlis import preprocess, middle_to_after, st
+import os
 import pandas as pd
 import pickle
 import re
 
+cur_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(cur_dir, ".."))
+from utils import middle_to_after
+
 class BooleanSearch:
     def __init__(self):
-        with open('../data/position_index_none.pkl', 'rb') as f:
+        with open('./data/position_index_none.pkl', 'rb') as f:
             self.posting_lists = pickle.load(f)
-        self.metadata = pd.read_csv("../2020-04-03/metadata_with_mag_mapping_04_03.csv", encoding="utf-8")
+        self.metadata = pd.read_csv("./2020-04-03/metadata.csv", encoding="utf-8")
 
     def search(self, query):
         expression = middle_to_after(query)
@@ -36,6 +38,7 @@ class BooleanSearch:
                 stack_value.append(result)
             else:
                 stack_value.append(item)  # 词语直接压栈
+
         result = list(stack_value[0])
         print(result)
         for i in range(len(result)):
@@ -50,7 +53,8 @@ class BooleanSearch:
                         pass
             paper = self.metadata[self.metadata.cord_uid == uid].to_dict('records')[0]
             result[i] = {'cord_uid':uid, 'title': paper['title'], 
-                        'authors': paper['authors'], 'abstract': paper['abstract'], 'positions': positions}
+                        'authors': paper['authors'], 'abstract': paper['abstract'], 
+                        'positions': positions}
             print(result[i])
 
         return result

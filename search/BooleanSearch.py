@@ -51,11 +51,25 @@ class BooleanSearch:
                     except:  # NOT xxx / OR xxx
                         # print('cannot find', item)
                         pass
+
             paper = self.metadata[self.metadata.cord_uid == uid].to_dict('records')[0]
             result[i] = {'cord_uid':uid, 'title': paper['title'], 
                         'authors': paper['authors'], 'abstract': paper['abstract'], 
                         'positions': positions}
             print(result[i])
+
+            ## TODO: change result into results_all form
+            # paper = self.metadata.get(uid, None)
+            # if not paper:
+            #     continue
+            # authors = self.__list_author(paper['authors'])
+            # abstract = preprocess(paper['abstract'], fussy_method=self.fussy_method)
+            # title_processed = preprocess(paper['title'], fussy_method=self.fussy_method)
+            # positions = [i-len(title_processed) for i in positions if i>len(title_processed)]
+            # cur_res = {'cord_uid':uid, 'title': paper['title'], 
+            #             'authors': authors, 
+            #             'abstract': abstract, 'positions': positions}
+            # results_all.append(cur_res)
 
         return result
 

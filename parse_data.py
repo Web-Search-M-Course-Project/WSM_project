@@ -40,7 +40,6 @@ def process_data(folders, pmc=False):
             #     query = f"sha == '{data['paper_id']}'"
             # else:
             #     query = f"pmcid == '{data['paper_id']}'"
-
             # res = metadata.query(query)
 
             res = metadata[metadata['sha' if not pmc else 'pmcid'].str.contains(data['paper_id'])==True]

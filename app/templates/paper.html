@@ -2,26 +2,74 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Paper Details </title> 
-        <style type="text/css">
-            #content1 {
-            position: absolute;
-            height: 100px;
-            line-height: 200px;
-            left: 38%;
-            top: 20%
-        }
-            #content2 {
-            position: absolute;
-            top: 40%;
-            left: 35%;
-        }
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <title>Paper Details</title>  
+        <style>
+            html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+            li {display: inline;}
         </style>
     </head>
-    <body>
-        <h1>{{Title}}</h1>
-        <h2>{{Author}}</h2>
-        <h3>{{Abstract}}</h3>
 
+    <body class="w3-light-grey">
+    <div class="w3-content" style="max-width:1200px">
+        <div class="w3-row" style="min-height: 25px">&nbsp</div>
+        <div class="w3-row" style="min-height: 100px">
+            <div class="w3-col s1"  >
+                <h4 align="center" stype="background-color: w3-white"><b> Covid-19 Search</b> </h4>
+            </div>
+
+            <!-- search box -->
+            <div class="w3-col s8" >
+                <div id="search-box-in-result" class='w3-margin', style="max-width:1400px">
+                    <form action = '/result' method="get" style="font-size: 20pt">
+                        <input type="text" name="searchText" style="font-size: 20pt" size="38" width="max-width" />                   
+                        <input type="submit" style="font-size: 20pt" value="Search"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    <!-- ---------------------------------------------------- -->
+        <div class="w3-border" ></div>
+    <!-- ------------------------------------------- -->
+        
+        <div class="w3-row" style="min-height: 25px">&nbsp</div>
+
+        <div class="w3-row"style="min-height: 25px">
+            <div class="w3-col s8">
+                <!-- Header -->
+                <!-- <div class="w3-container w3-padding-hor-32"> 
+                    <h3 vertical-align="bottom" ><b>{{res['title']}}:</b></h1>
+                </div> -->
+
+                <!-- article result -->
+                <div class="w3-card-4 w3-margin w3-white">
+                    <!--title and author-->
+                    <div class="w3-container w3-padding-hor-8">
+                        <h3><b>{{res['title']}}</b></h3>
+                        
+                            <p><b>{{res['authors']|join(", ")}}</b></p>
+                        
+                    </div>
+                    <!--abstract-->
+                    <div class="w3-container">
+                        <p>
+                        {{res['abstract']}}
+                        </p>
+                        <div class="w3-row">
+                        <div class="w3-col m4 w3-hide-small">
+                            <p><span class="w3-padding-large w3-left"><b>UID:{{uid}} </b></span></p>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+        </div>  
+
+      
+    </div>
+    
     </body>
 </html>

@@ -12,12 +12,16 @@ sys.path.append(os.path.join(cur_dir, ".."))
 from utils import preprocess
 
 def construct_position_index_from_metadata(fussy_method=None):
-    metadata = pd.read_csv("./2020-04-03/metadata.csv", encoding="utf-8")
+    # metadata = pd.read_csv("./2020-04-03/metadata.csv", encoding="utf-8")
+    with open(f'./data/meta_data.json', 'r', encoding='utf-8') as f:
+            metadata = json.load(f)   
+
     # print("Open OK")
     position_index_map = {}
-    for idx, paper in tqdm(metadata.iterrows()):
-        cord_uid = paper['cord_uid']
-        paper_id = paper['sha']
+    # for idx, paper in tqdm(metadata.iterrows()):
+    for cord_uid, paper in tqdm(metadata.items()):
+        # cord_uid = paper['cord_uid']
+        # paper_id = paper['sha']
         title = preprocess(paper['title'], fussy_method=fussy_method)
         abstract = preprocess(paper['abstract'], fussy_method=fussy_method)
         tokens = title + abstract

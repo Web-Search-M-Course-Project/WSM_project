@@ -24,6 +24,21 @@ def get_result(search_text, search, meta_data, num=5):
     results = parse_result(all_files)
     return results
 
+def list_author(authors):
+    """return author name under each paper"""
+    names = []
+    for author in authors:
+        if isinstance(author, str):
+            names.append(author)
+            continue
+        if len(author['first'])!=0:  name = author['first']
+        if len(author['middle']) != 0: 
+            for mid in author['middle']:
+                name += mid
+        if len(author['last'])!=0: name = name + ' ' + author['last'] 
+        if len(name)!= 0: names.append(name) 
+    return names
+
 # def parse_result_from_result(results, meta_data):
 #             # result = {'authors': authors, 'title': title, 'abstract': abstract}
 #     for uid in results:
@@ -31,7 +46,6 @@ def get_result(search_text, search, meta_data, num=5):
 #         paper = {}
 #         paper['authors'] = list_author(data['authors'])
 #         paper['title'] = 
-
 
 def slice_result(results, page_num, per_page_num):
     if page_num < 1 or page_num > math.ceil(len(results) /per_page_num):

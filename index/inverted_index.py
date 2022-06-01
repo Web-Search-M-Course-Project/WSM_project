@@ -12,14 +12,14 @@ from utils import preprocess
 
 
 def construct_inverted_index_from_metadata(fussy_method=None):
-    metadata = pd.read_csv("./2020-04-03/metadata.csv", encoding="utf-8")
-    # with open('./data/meta_data.json', 'r', encoding='utf-8') as f:
-    #     meta_data = json.load(f)
+    # metadata = pd.read_csv("./2020-04-03/metadata.csv", encoding="utf-8")
+    with open('./data/meta_data.json', 'r', encoding='utf-8') as f:
+        meta_data = json.load(f)
 
     inverted_index_map = {}
-    for idx, paper in tqdm(metadata.iterrows()):
-    # for cord_uid, paper in tqdm(meta_data.items()):
-        cord_uid = paper['cord_uid']
+    # for idx, paper in tqdm(metadata.iterrows()):
+    for cord_uid, paper in tqdm(meta_data.items()):
+        # cord_uid = paper['cord_uid']
         title = preprocess(paper['title'], fussy_method=fussy_method)
         abstract = preprocess(paper['abstract'], fussy_method=fussy_method)
         tokens = title + abstract
@@ -72,6 +72,6 @@ if __name__ == '__main__':
     # construct_inverted_index(fussy_method='stem')
     # construct_inverted_index(fussy_method='lemmatize')
 
-    # construct_inverted_index_from_metadata(fussy_method=None)
-    # construct_inverted_index_from_metadata(fussy_method='stem')
+    construct_inverted_index_from_metadata(fussy_method=None)
+    construct_inverted_index_from_metadata(fussy_method='stem')
     construct_inverted_index_from_metadata(fussy_method='lemmatize')

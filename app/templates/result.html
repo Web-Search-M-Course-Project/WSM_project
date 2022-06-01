@@ -14,9 +14,7 @@
 
     <body class="w3-light-grey">
     <div class="w3-content" style="max-width:1200px">
-
         <div class="w3-row" style="min-height: 25px">&nbsp</div>
-
         <div class="w3-row" style="min-height: 100px">
             <div class="w3-col s1"  >
                 <h4 align="center" stype="background-color: w3-white"><b> Covid-19 Search</b> </h4>
@@ -26,7 +24,7 @@
             <div class="w3-col s8" >
                 <div id="search-box-in-result" class='w3-margin', style="max-width:1400px">
                     <form action = '/result' method="get" style="font-size: 20pt">
-                        <input type="text" name="searchText" style="font-size: 20pt" size="38"  value={{searchText}} width="max-width"/>                    
+                        <input type="text" name="searchText" style="font-size: 20pt" size="38" width="max-width" />                   
                         <input type="submit" style="font-size: 20pt" value="Search"/>
                     </form>
                 </div>
@@ -40,12 +38,10 @@
         <div class="w3-row" style="min-height: 25px">&nbsp</div>
 
         <div class="w3-row"style="min-height: 25px">
-
             <div class="w3-col s8">
-
                 <!-- Header -->
                 <div class="w3-container w3-padding-hor-32"> 
-                    <h1 vertical-align="bottom" ><b>Result for {{searchText}}:</b></h1>
+                    <h3 vertical-align="bottom" ><b>Result for {{searchText}}:</b></h1>
                 </div>
 
                 <!-- show results -->
@@ -68,14 +64,25 @@
                         </div>
                         <!--abstract-->
                         <div class="w3-container">
-                            <p>{{res['abstract']}}</p>
-
+                            <p>
+                            {% for word in res['abstract'] %}
+                                {% if loop.index0 in res['positions'] %}
+                                    <font color="red">{{word}}</font>
+                                {%else%}
+                                    {{word}}
+                                {%endif%}
+                            {%endfor%}
+                            </p>
                             <div class="w3-row">
                             <div class="w3-col m8 s12">
-                                <p><button class="w3-btn w3-padding-large w3-white w3-border w3-hover-border-black"><b>READ MORE »</b></button></p>
+                                <p><button class="w3-btn w3-padding-large w3-white w3-border w3-hover-border-black">
+                                    <!-- <a>READ MORE »</a> -->
+                                    <a  href="{{url_for('show_paper', uid=res['cord_uid'])}}"> READ MORE</a>
+                                    
+                                </button></p>
                             </div>
                             <div class="w3-col m4 w3-hide-small">
-                                <p><span class="w3-padding-large w3-right"><b>Comments  </b> <span class="w3-tag">0</span></span></p>
+                                <p><span class="w3-padding-large w3-right"><b>UID:{{res['cord_uid']}}  </b></span></p>
                             </div>
                             </div>
                         </div>

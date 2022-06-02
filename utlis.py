@@ -1,3 +1,4 @@
+import time
 from nltk import tokenize
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
@@ -7,6 +8,23 @@ import pickle
 import json
 import os
 
+class timer(object):    
+    def __init__(self, info:str = "") -> None:
+        self.info = info
+        self.start = time.time()
+    
+    def __enter__(self):
+        return self
+    
+    def __call__(self) -> float:
+        return time.time()-self.start
+
+    def __del__(self) -> None:
+        print("%.3f seconds "%(self.__call__(),)+self.info)
+    
+    def __exit__(self, exc_type, exc_value, exc_traceback) -> None:
+        # self.__del__()
+        pass
 def picklize():
     _dir = os.listdir("data")
     for dd in _dir:
@@ -34,8 +52,9 @@ english_stopwords = stopwords.words('english')
 english_punctuations = "[,.:+-/;?()&!*@#$%\'\"]"
 
 def preprocess(text, fussy_method=None):
-    text = re.sub(english_punctuations, "", text)
-    text = re.sub("[0-9]", "", text)
+    text = re.sub(english_punctuations, " ", text)
+    text = re.sub("[0-9]", " ", text)
+    text = re.sub("[^a-zA-Z ]"," ",text).lower()
     tokens = tokenize.word_tokenize(text)
     filtered_tokens = [word for word in tokens if word not in english_stopwords]
     processed_text = filtered_tokens

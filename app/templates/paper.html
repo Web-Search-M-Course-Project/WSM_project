@@ -22,9 +22,27 @@
             <!-- search box -->
             <div class="w3-col s8" >
                 <div id="search-box-in-result" class='w3-margin', style="max-width:1400px">
-                    <form action = '/result' method="get" style="font-size: 20pt">
+                    <form action = '/result' method="get" >
                         <input type="text" name="searchText" style="font-size: 20pt" size="38" width="max-width" />                   
                         <input type="submit" style="font-size: 20pt" value="Search"/>
+                        
+                        <p>
+                        <b style="font-size: 12pt">Choose Fussy Method:</b> 
+                    
+                            Boolean Search<input type="radio" name="fussy" value="None" {% if fussy == 'None'%} checked{%endif%} /> &nbsp;&nbsp;&nbsp;
+                            Stem Search<input type="radio" name="fussy" value="stem" {% if fussy == 'stem'%} checked{%endif%} />    &nbsp;&nbsp;&nbsp;                   
+                            Lemmatization<input type="radio" name="fussy" value="lemmatize" {% if fussy == 'lemmatize'%} checked{%endif%} /> &nbsp;&nbsp;&nbsp;
+                        </p>
+                    
+                        <p><b style="font-size: 12pt">Choose Sort Method:</b> 
+                            TF-IDF<input type="radio" name="sort" value="tfidf" {% if sort == 'tfidf'%} checked{%endif%} /> &nbsp;&nbsp;&nbsp;
+                            Cosine TF-IDF<input type="radio" name="sort" value="cos-tf" {% if sort == 'cos-tf'%} checked{%endif%} />&nbsp;&nbsp;&nbsp;
+                            Citation<input type="radio" name="sort" value="citation" {% if sort == 'citation'%} checked{%endif%} />&nbsp;&nbsp;&nbsp;
+                            Page Rank<input type="radio" name="sort" value="pagerank" {% if sort == 'pagerank'%} checked{%endif%} />&nbsp;&nbsp;&nbsp;
+                            Mixture<input type="radio" name="sort" value="mix" {% if sort == 'mix'%} checked{%endif%} />&nbsp;&nbsp;&nbsp;
+                        </p>
+                        
+
                     </form>
                 </div>
             </div>

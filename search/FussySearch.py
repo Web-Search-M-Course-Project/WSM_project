@@ -13,28 +13,12 @@ class FussySearch:
     def __init__(self, fussy_method='stem'):
         assert fussy_method in ['stem', 'lemmatize']
         self.fussy_method = fussy_method
+
         with open(f'./data/position_index_{fussy_method}.pkl', 'rb') as f:
             self.posting_lists = pickle.load(f)
 
-        # self.metadata = pd.read_csv("./2020-04-03/metadata.csv", encoding="utf-8")
-        with open(f'./data/meta_data.json', 'r', encoding='utf-8') as f:
-            self.metadata = json.load(f)           
-    
-    def __list_author(self, authors, num=5):
-        """return author name under each paper"""
-        names = []
-        count = 0
-        for author in authors:
-            count += 1
-            name = ""
-            if len(author['first'])!=0: name = author['first'][0] 
-            # if len(author['middle']) != 0: name += author['middle'][0][0] 
-            if len(author['last'])!=0: name = name + ' ' + author['last'] 
-            if len(name)!= 0: names.append({'name':name, 'show':count<=num}) 
-        return names
-
     def search(self, query):
-        results_all = []
+        result_with_positions = {}
         expression = middle_to_after(query)
         fussy_expression = []
         modified_expression = []
@@ -45,8 +29,10 @@ class FussySearch:
                 elif self.fussy_method == 'lemmatize':
                     item = Word(item).lemmatize()
                     item = Word(item).lemmatize('v')
+                item = item.lower()
                 fussy_expression.append(item)
-                item = set(self.posting_lists[item].keys())
+                item = set(self.posting_lists.get(item, {}).keys())
+                # item = set(self.posting_lists[item].keys())
             modified_expression.append(item)
 
         stack_value = []
@@ -66,6 +52,7 @@ class FussySearch:
                 stack_value.append(item)  # 词语直接压栈
         result = list(stack_value[0])        
         # print(result)
+        
         for i in range(len(result)):
             uid = result[i]
             positions = []
@@ -75,20 +62,9 @@ class FussySearch:
                 except:  # NOT xxx / OR xxx
                     # print('cannot find', item)
                     pass
-
-            # paper = self.metadata[self.metadata.cord_uid == uid].to_dict('records')[0]
-            paper = self.metadata.get(uid, None)
-            if not paper:
-                continue
-            authors = self.__list_author(paper['authors'])
-            abstract = preprocess(paper['abstract'], fussy_method=self.fussy_method)
-            title_processed = preprocess(paper['title'], fussy_method=self.fussy_method)
-            positions = [i-len(title_processed) for i in positions if i>len(title_processed)]
-            cur_res = {'cord_uid':uid, 'title': paper['title'], 
-                        'authors': authors, 
-                        'abstract': abstract, 'positions': positions}
-            results_all.append(cur_res)
-        return results_all
+            result_with_positions[uid] = positions
+    
+        return result_with_positions
 
 if __name__ == '__main__':
     fussy_search = FussySearch(fussy_method='stem')

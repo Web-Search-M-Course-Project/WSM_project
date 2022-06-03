@@ -15,8 +15,6 @@
     <div class="w3-content" style="max-width:1200px">
         <div class="w3-row" style="min-height: 100px">
             
-
-    
         <!-- search box -->
         
             <div id="search-box-in-result" class='w3-margin' align="center">
@@ -27,11 +25,29 @@
                 </div>
               
                 <h1 align="center" stype="background-color: w3-white"><b> Covid-19 Search</b> </h1>
-                <form action = '/result' method="get" style="font-size: 20pt">
+                <form action = '/result' method="get" >
                     <input type="text" name="searchText" style="font-size: 20pt" size="38" width="max-width" />                   
                     <input type="submit" style="font-size: 20pt" value="Search"/>
+
+                    <br/><br/><br/>
+                    <p>
+                    <b style="font-size: 12pt">Choose Fussy Method:</b>   &nbsp;&nbsp;&nbsp;
+                   
+                        Boolean Search<input type="radio" name="fussy" value="None" checked /> &nbsp;&nbsp;&nbsp;
+                        Stem Search<input type="radio" name="fussy" value="stem" />    &nbsp;&nbsp;&nbsp;                   
+                        Lemmatization<input type="radio" name="fussy" value="lemmatize" /> &nbsp;&nbsp;&nbsp;
+                    </p>
+
+                    <p>
+                    <b style="font-size:12pt">Choose Sort Method:</b> &nbsp;&nbsp;&nbsp;
+                        TF-IDF<input type="radio" name="sort" value="tfidf" checked/> &nbsp;&nbsp;&nbsp;
+                        Cosine TF-IDF<input type="radio" name="sort" value="cos-tf" />&nbsp;&nbsp;&nbsp;
+                        Citation<input type="radio" name="sort" value="citation" />&nbsp;&nbsp;&nbsp;
+                        Page Rank<input type="radio" name="sort" value="pagerank" />&nbsp;&nbsp;&nbsp;
+                        Mixture<input type="radio" name="sort" value="mix" />&nbsp;&nbsp;&nbsp;   
+                    </p>       
                 </form>
-          
+
             </div>
          
         </div>
